@@ -2,6 +2,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BookOpen, Award, Briefcase } from "lucide-react";
+import { easeOut } from "framer-motion";
+
 
 const Timeline = () => {
   const timelineData = [
@@ -45,14 +47,16 @@ const Timeline = () => {
     },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: easeOut },
+  },
+};
+
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-slate-100">
