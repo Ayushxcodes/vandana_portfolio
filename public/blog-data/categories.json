@@ -1,0 +1,17 @@
+[
+  {
+    "id": "web-dev",
+    "name": "Web Development",
+    "slug": "web-development"
+  },
+  {
+    "id": "javascript",
+    "name": "JavaScript",
+    "slug": "javascript"
+  },
+  {
+    "id": "react",
+    "name": "React",
+    "slug": "react"
+  }
+]

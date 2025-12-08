@@ -12,7 +12,7 @@ const Navbar = () => {
     { label: 'About', href: '/about' },
     { label: 'Portfolio', href: '/portfolio' },
     { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/contact' },
+    { label: 'Admin', href: '/admin' },
   ]
 
   return (
