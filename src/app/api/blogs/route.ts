@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const categoryId = searchParams.get("category");
 
-    let blogs = getAllBlogs().filter((blog: any) => blog.published !== false);
+    let blogs = (await getAllBlogs()).filter((blog: any) => blog.published !== false);
 
     if (categoryId) {
       blogs = blogs.filter((blog: any) => blog.category === categoryId);
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const blog = createBlog({
+    const blog = await createBlog({
       title,
       content,
       excerpt,

@@ -1,9 +1,5 @@
-import { getCategories, addCategory } from "@/lib/blog-utils";
+import { deleteCategoryById, updateCategory } from "@/lib/blog-utils";
 import { NextRequest, NextResponse } from "next/server";
-import * as fs from "fs";
-import * as path from "path";
-
-const CATEGORIES_FILE = path.join(process.cwd(), "public", "blog-data", "categories.json");
 
 // PUT update category
 export async function PUT(
@@ -30,34 +26,12 @@ export async function PUT(
       );
     }
 
-    // Read current categories
-    const categoriesData = fs.readFileSync(CATEGORIES_FILE, "utf-8");
-    const categories = JSON.parse(categoriesData);
-
-    // Find and update category
-    const categoryIndex = categories.findIndex((cat: any) => cat.id === id);
-    if (categoryIndex === -1) {
-      return NextResponse.json(
-        { error: "Category not found" },
-        { status: 404 }
-      );
-    }
-
-    categories[categoryIndex] = {
-      ...categories[categoryIndex],
-      name,
-      slug: slug || name.toLowerCase().replace(/\s+/g, "-"),
-    };
-
-    // Write back to file
-    fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
-
-    return NextResponse.json(categories[categoryIndex]);
+    const category = await updateCategory(id, { name, slug });
+    return NextResponse.json(category);
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Failed to update category" },
-      { status: 500 }
-    );
+    const message = error?.message || "Failed to update category";
+    const status = message === "Category not found" ? 404 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }
 
@@ -77,30 +51,11 @@ export async function DELETE(
       );
     }
 
-    // Read current categories
-    const categoriesData = fs.readFileSync(CATEGORIES_FILE, "utf-8");
-    const categories = JSON.parse(categoriesData);
-
-    // Find and remove category
-    const categoryIndex = categories.findIndex((cat: any) => cat.id === id);
-    if (categoryIndex === -1) {
-      return NextResponse.json(
-        { error: "Category not found" },
-        { status: 404 }
-      );
-    }
-
-    const deletedCategory = categories[categoryIndex];
-    categories.splice(categoryIndex, 1);
-
-    // Write back to file
-    fs.writeFileSync(CATEGORIES_FILE, JSON.stringify(categories, null, 2));
-
+    const deletedCategory = await deleteCategoryById(id);
     return NextResponse.json({ message: "Category deleted", category: deletedCategory });
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Failed to delete category" },
-      { status: 500 }
-    );
+    const message = error?.message || "Failed to delete category";
+    const status = message === "Category not found" ? 404 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 }

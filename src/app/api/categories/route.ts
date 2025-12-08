@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 // GET all categories
 export async function GET() {
   try {
-    const categories = getCategories();
+    const categories = await getCategories();
     return NextResponse.json(categories);
   } catch (error) {
     return NextResponse.json(
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const category = addCategory(name);
+    const category = await addCategory(name);
     return NextResponse.json(category, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(

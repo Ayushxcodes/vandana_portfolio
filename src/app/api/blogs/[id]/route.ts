@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const blog = getBlogById(id);
+    const blog = await getBlogById(id);
 
     if (!blog) {
       return NextResponse.json(
@@ -44,7 +44,7 @@ export async function PUT(
 
     const { title, content, excerpt, image, category, author, published } = await request.json();
 
-    const blog = updateBlog(id, {
+    const blog = await updateBlog(id, {
       ...(title && { title }),
       ...(content && { content }),
       ...(excerpt && { excerpt }),
@@ -79,7 +79,7 @@ export async function DELETE(
       );
     }
 
-    deleteBlog(id);
+    await deleteBlog(id);
 
     return NextResponse.json({ message: "Blog deleted" });
   } catch (error: any) {
